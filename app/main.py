@@ -30,3 +30,8 @@ app.include_router(dummy_recruiters.router, prefix="/dummy-recruiters", tags=["d
 app.include_router(recruiters.router, prefix="/recruiters", tags=["recruiters"])
 app.include_router(job_listings.router, prefix="/job-listings", tags=["job_listings"])
 app.include_router(job_details.router, prefix="/job-details", tags=["job_details"])
+app.include_router(organizations.router, prefix="/organizations", tags=["organizations"])
+app.include_router(dummy_recruiters.router, prefix="/dummy-recruiters", tags=["dummy_recruiters"])
+app.include_router(recruiters.router, prefix="/recruiters", tags=["recruiters"])
+app.include_router(job_listings.router, prefix="/job-listings", tags=["job_listings"])
+app.include_router(job_details.router, prefix="/job-details", tags=["job_details"])

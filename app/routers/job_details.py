@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from .. import schemas, database, crud
+from .. import schemas, database, crud, models
 
 router = APIRouter()
 
@@ -13,3 +13,15 @@ def create_job_detail(detail: schemas.JobDetailCreate, db: Session = Depends(dat
         raise HTTPException(status_code=404, detail="Job listing not found")
 
     return crud.create_job_detail(db, detail)
+
+@router.get("/job-details/{job_detail_id}", response_model=schemas.JobDetail)
+def get_job_detail(job_detail_id: int, db: Session = Depends(database.get_db)):
+    job_detail = db.query(models.JobDetail).filter(models.JobDetail.id == job_detail_id).first()
+    if not job_detail:
+        raise HTTPException(status_code=404, detail="Job detail not found")
+    return job_detail
+
+@router.get("/job-details/", response_model=list[schemas.JobDetail])
+def get_all_job_details(db: Session = Depends(database.get_db)):
+    job_details = db.query(models.JobDetail).all()
+    return job_details
