@@ -28,7 +28,7 @@ class UserProfile(UserProfileBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes  = True
 
 
 # user schemas
@@ -44,7 +44,7 @@ class User(UserBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes  = True
 
 
 # job schemas
@@ -64,7 +64,7 @@ class Organization(OrganizationBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes  = True
 
 
 class DummyRecruiterBase(BaseModel):
@@ -81,7 +81,7 @@ class DummyRecruiter(DummyRecruiterBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes  = True
 
 
 class RecruiterBase(BaseModel):
@@ -100,7 +100,7 @@ class Recruiter(RecruiterBase):
     is_valid: bool = False
 
     class Config:
-        orm_mode = True
+        from_attributes  = True
 
 
 class JobListingBase(BaseModel):
@@ -110,6 +110,7 @@ class JobListingBase(BaseModel):
     immigration: bool
     apply_link: str
     job_nature: str
+    job_role: str
 
 
 class JobListingCreate(JobListingBase):
@@ -121,7 +122,7 @@ class JobListing(JobListingBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes  = True
 
 
 class JobDetailBase(BaseModel):
@@ -140,4 +141,58 @@ class JobDetail(JobDetailBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes  = True
+
+# HOTFIX: New schemas for job listings:from pydantic import BaseModel
+from typing import List
+
+
+class OrganizationForJobListing(BaseModel):
+    id: int
+    name: str
+    description: str
+    location: str
+    website: str
+    logo_link: str
+
+    class Config:
+        from_attributes  = True
+
+
+class RecruiterForJobListing(BaseModel):
+    id: int
+    name: str
+    email: str
+    organization_id: int
+
+    class Config:
+        from_attributes  = True
+
+
+class JobDetailForJobListing(BaseModel):
+    id: int
+    role_data: str
+    apply_link: str
+    company_link: str
+    about_you: str
+    must_do: str
+
+    class Config:
+        from_attributes  = True
+
+
+class JobListingWithRelations(BaseModel):
+    id: int
+    job_type: str
+    salary_low: str
+    salary_high: str
+    immigration: bool
+    apply_link: str
+    job_nature: str
+    created: str
+    organization: OrganizationForJobListing
+    recruiter: RecruiterForJobListing
+    job_details: list[JobDetailForJobListing]
+
+    class Config:
+        from_attributes  = True

@@ -32,7 +32,7 @@ def create_organization(db: Session, org: schemas.OrganizationCreate):
     # Check if an organization with the same name already exists
     existing_org = db.query(models.Organization).filter(models.Organization.name == org.name).first()
     if existing_org:
-        raise HTTPException(status_code=400, detail="Organization with this name already exists")
+        return existing_org
     
     # Create the organization if it doesn't exist
     db_org = models.Organization(
@@ -79,11 +79,12 @@ def create_job_listing(db: Session, job: schemas.JobListingCreate):
         immigration=job.immigration,
         apply_link=job.apply_link,
         job_nature=job.job_nature,
+        job_role=job.job_role,
     )
     db.add(db_job)
     db.commit()
     db.refresh(db_job)
-    return db_job
+    return db_job.__dict__
 
 
 def create_job_detail(db: Session, detail: schemas.JobDetailCreate):

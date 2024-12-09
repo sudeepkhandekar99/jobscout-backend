@@ -81,6 +81,7 @@ class JobListing(Base):
     created = Column(DateTime, server_default=func.now(), nullable=False)
     apply_link = Column(String, nullable=False)
     job_nature = Column(String, nullable=False)  # "remote", "hybrid", or default
+    job_role = Column(String, nullable=False)
 
     organization = relationship("Organization", back_populates="job_listings")
     recruiter = relationship("Recruiter", back_populates="job_listings")
